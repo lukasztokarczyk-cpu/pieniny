@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pieniny AR Odkrywca</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --forest:#1a3a0f;
+  --forest-mid:#2d5a1a;
+  --forest-light:#4a8c2a;
+  --forest-bright:#7cb84a;
+  --river:#0e4a6e;
+  --river-mid:#1a7ab0;
+  --river-light:#4aaccc;
+  --stone:#5c4a32;
+  --stone-light:#c4a882;
+  --gold:#c8920a;
+  --gold-light:#f0b543;
+  --cream:#f5f0e8;
+  --ink:#1a1a12;
+  --danger:#c0392b;
+  --sky:#87ceeb;
+  --parchment:#f9f3e3;
+  --shadow:rgba(0,0,0,0.35);
+}
+
+html,body{
+  width:100%;height:100%;
+  font-family:'DM Sans',sans-serif;
+  background:#0a0a06;
+  overflow:hidden;
+}
+
+/* ── PHONE FRAME ── */
+.phone{
+  width:390px;height:844px;
+  background:#111;
+  border-radius:48px;
+  border:2px solid #333;
+  overflow:hidden;
+  position:relative;
+  margin:0 auto;
+  box-shadow:0 40px 100px rgba(0,0,0,0.8);
+}
+.notch{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:120px;height:30px;
+  background:#111;border-radius:0 0 18px 18px;
+  z-index:999;
+}
+
+/* centering wrapper */
+.app-shell{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;
+  padding:20px;
+  background:radial-gradient(ellipse at 30% 20%, #1a3a0f 0%, #0a150a 40%, #060806 100%);
+}
+
+/* ── SCREENS ── */
+.screen{
+  position:absolute;inset:0;
+  overflow:hidden;
+  display:none;
+  flex-direction:column;
+}
+.screen.active{display:flex;}
+
+/* ══════════════════════════════════
+   SCREEN 1 — HOME
+══════════════════════════════════ */
+#s-home{
+  background:linear-gradient(170deg, #0e2a08 0%, #1a3a12 40%, #0d2436 100%);
+}
+.home-bg{
+  position:absolute;inset:0;
+  background:
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80') center/cover no-repeat;
+  opacity:0.25;
+}
+.home-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,25,8,0.3) 0%,rgba(10,20,6,0.85) 60%,rgba(10,20,6,0.98) 100%);
+}
+.home-content{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;
+  height:100%;
+  padding:60px 22px 28px;
+}
+.home-logo{
+  text-align:center;
+  margin-bottom:6px;
+}
+.home-logo .brand{
+  font-family:'Cinzel',serif;
+  font-size:38px;font-weight:700;
+  color:#fff;
+  text-shadow:0 2px 20px rgba(124,184,74,0.5);
+  letter-spacing:2px;
+  line-height:1;
+}
+.home-logo .brand span{color:#7cb84a;}
+.home-logo .sub{
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-size:14px;
+  color:rgba(255,255,255,0.6);
+  letter-spacing:3px;
+  margin-top:4px;
+}
+.bird-icon{font-size:22px;margin-bottom:4px;}
+
+.home-tagline{
+  text-align:center;
+  font-family:'Crimson Pro',serif;
+  font-size:14px;color:rgba(255,255,255,0.55);
+  margin-bottom:22px;
+  letter-spacing:0.5px;
+}
+
+/* tiles grid */
+.tiles-label{
+  font-size:11px;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);
+  margin-bottom:12px;
+}
+.tiles{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  flex:1;
+}
+.tile{
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  min-height:130px;
+  transition:transform 0.18s ease,box-shadow 0.18s ease;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.tile:active{transform:scale(0.96);}
+.tile-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transition:transform 0.4s ease;
+}
+.tile:hover .tile-bg{transform:scale(1.05);}
+.tile-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.7) 100%);
+}
+.tile-content{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:10px 12px;
+}
+.tile-icon{font-size:20px;margin-bottom:3px;display:block;}
+.tile-name{
+  font-family:'Cinzel',serif;
+  font-size:12.5px;font-weight:600;
+  color:#fff;line-height:1.2;
+  text-shadow:0 1px 6px rgba(0,0,0,0.8);
+}
+.tile-desc{
+  font-size:10px;color:rgba(255,255,255,0.65);
+  margin-top:2px;
+}
+.tile-badge{
+  position:absolute;top:10px;right:10px;
+  background:rgba(124,184,74,0.9);
+  color:#fff;font-size:9px;font-weight:500;
+  padding:2px 7px;border-radius:10px;
+  letter-spacing:0.05em;
+}
+
+/* tile colors */
+.tile-trzy .tile-bg{background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=70');}
+.tile-sokolica .tile-bg{background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=70');}
+.tile-zamek .tile-bg{background-image:url('https://images.unsplash.com/photo-1529260830199-42c24126f198?w=400&q=70');}
+.tile-dunajec .tile-bg{background-image:url('https://images.unsplash.com/photo-1502786129293-79981df4e689?w=400&q=70');}
+
+.home-bottom{
+  margin-top:14px;
+  display:flex;gap:10px;
+}
+.btn-primary{
+  flex:1;
+  background:linear-gradient(135deg,#4a8c2a,#2d5a1a);
+  color:#fff;
+  border:none;border-radius:14px;
+  padding:14px;
+  font-family:'Cinzel',serif;
+  font-size:13px;font-weight:600;
+  cursor:pointer;
+  letter-spacing:0.05em;
+  box-shadow:0 4px 20px rgba(74,140,42,0.4);
+  transition:transform 0.15s,box-shadow 0.15s;
+}
+.btn-primary:active{transform:scale(0.97);box-shadow:0 2px 10px rgba(74,140,42,0.3);}
+.btn-secondary{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.18);
+  color:rgba(255,255,255,0.8);
+  border-radius:14px;
+  padding:14px 18px;
+  font-size:11px;font-weight:500;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:background 0.15s;
+}
+.btn-secondary:active{background:rgba(255,255,255,0.15);}
+
+/* ══════════════════════════════════
+   SHARED — INNER SCREEN HEADER
+══════════════════════════════════ */
+.inner-header{
+  position:relative;
+  height:220px;
+  flex-shrink:0;
+  overflow:hidden;
+}
+.inner-header-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+}
+.inner-header-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.7) 100%);
+}
+.inner-header-content{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:14px 18px 18px;
+}
+.back-btn{
+  position:absolute;top:38px;left:14px;
+  width:36px;height:36px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#fff;font-size:18px;
+  backdrop-filter:blur(8px);
+  transition:background 0.15s;
+  z-index:10;
+}
+.back-btn:active{background:rgba(0,0,0,0.7);}
+.inner-title{
+  font-family:'Cinzel',serif;
+  font-size:24px;font-weight:700;
+  color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,0.6);
+  line-height:1.1;
+}
+.inner-subtitle{
+  font-family:'Crimson Pro',serif;
+  font-style:italic;
+  font-size:13px;color:rgba(255,255,255,0.7);
+  margin-top:3px;
+  letter-spacing:1px;
+}
+.inner-body{
+  flex:1;overflow-y:auto;
+  background:#f5f0e8;
+  border-radius:0;
+}
+.inner-body::-webkit-scrollbar{width:0;}
+
+/* ══════════════════════════════════
+   SCREEN 2 — TRZY KORONY (AR Trail)
+══════════════════════════════════ */
+#s-trzy{background:#0e2a08;}
+
+.ar-view{
+  position:relative;
+  height:320px;
+  flex-shrink:0;
+  overflow:hidden;
+}
+.ar-view-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80') center/cover;
+}
+.ar-hud{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  padding:36px 14px 14px;
+}
+.ar-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.ar-signal{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(8px);
+  border-radius:20px;padding:5px 10px;
+  border:1px solid rgba(74,140,42,0.4);
+}
+.signal-dot{width:7px;height:7px;border-radius:50%;background:#4a8c2a;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.ar-signal span{font-size:10px;color:#7cb84a;font-weight:500;}
+
+.ar-peak-label{
+  background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px;padding:8px 14px;
+  text-align:center;
+}
+.ar-peak-label .peak-name{
+  font-family:'Cinzel',serif;
+  font-size:16px;font-weight:600;color:#fff;
+}
+.ar-peak-label .peak-elev{
+  font-size:11px;color:rgba(255,255,255,0.6);
+  margin-top:1px;
+}
+
+.ar-arrow{
+  position:absolute;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.arrow-up{
+  width:0;height:0;
+  border-left:16px solid transparent;
+  border-right:16px solid transparent;
+  border-bottom:28px solid rgba(240,181,67,0.9);
+  filter:drop-shadow(0 0 10px rgba(240,181,67,0.8));
+  animation:bounce 1.2s infinite;
+}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.arrow-label{
+  background:rgba(240,181,67,0.9);
+  color:#1a1a00;font-size:10px;font-weight:600;
+  padding:2px 8px;border-radius:8px;
+  letter-spacing:0.05em;
+}
+
+.ar-bottom{display:flex;gap:8px;}
+.ar-info-pill{
+  flex:1;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:12px;
+  padding:8px 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.pill-icon{font-size:16px;}
+.pill-text .val{font-size:14px;font-weight:500;color:#fff;}
+.pill-text .lbl{font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;}
+
+.ar-fact{
+  position:absolute;bottom:55px;left:14px;right:14px;
+  background:rgba(26,58,15,0.8);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(124,184,74,0.3);
+  border-radius:10px;
+  padding:7px 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.ar-fact span{font-size:10px;color:rgba(255,255,255,0.75);line-height:1.4;}
+
+.trail-panel{
+  flex:1;overflow-y:auto;
+  background:#f5f0e8;
+  padding:18px;
+}
+.trail-panel::-webkit-scrollbar{width:0;}
+
+.trail-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,#c0392b,#922b21);
+  color:#fff;border-radius:20px;
+  padding:4px 12px;font-size:11px;font-weight:500;
+  margin-bottom:12px;
+}
+
+.trail-title{
+  font-family:'Cinzel',serif;
+  font-size:18px;color:#1a3a0f;
+  margin-bottom:3px;
+}
+.trail-sub{font-size:12px;color:#5c4a32;margin-bottom:16px;}
+
+.trail-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;margin-bottom:16px;
+}
+.stat-box{
+  background:#fff;
+  border-radius:12px;
+  padding:10px;text-align:center;
+  border:1px solid rgba(0,0,0,0.07);
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+.stat-val{font-size:15px;font-weight:600;color:#1a3a0f;}
+.stat-lbl{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-top:1px;}
+
+.waypoints{margin-bottom:16px;}
+.wp-label{font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+.waypoint{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.wp-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:#4a8c2a;flex-shrink:0;
+}
+.wp-dot.done{background:#ccc;}
+.wp-dot.active{background:#f0b543;box-shadow:0 0 0 3px rgba(240,181,67,0.3);}
+.wp-info{flex:1;}
+.wp-name{font-size:13px;font-weight:500;color:#1a1a12;}
+.wp-dist{font-size:11px;color:#888;}
+.wp-status{font-size:11px;color:#4a8c2a;font-weight:500;}
+
+.btn-ar-start{
+  width:100%;
+  background:linear-gradient(135deg,#4a8c2a,#2d5a1a);
+  color:#fff;border:none;border-radius:14px;
+  padding:15px;
+  font-family:'Cinzel',serif;font-size:13px;font-weight:600;
+  cursor:pointer;letter-spacing:0.05em;
+  box-shadow:0 4px 20px rgba(74,140,42,0.35);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+
+/* ══════════════════════════════════
+   SCREEN 3 — ZAMEK CZORSZTYN
+══════════════════════════════════ */
+#s-zamek{background:#1a0e00;}
+
+.castle-view{
+  position:relative;height:280px;flex-shrink:0;overflow:hidden;
+}
+.castle-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1529260830199-42c24126f198?w=800&q=80') center/cover;
+  filter:sepia(20%);
+}
+.castle-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(20,10,0,0.2) 0%,rgba(20,10,0,0.75) 100%);
+}
+.castle-ar-label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(200,146,10,0.15);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(200,146,10,0.5);
+  border-radius:16px;
+  padding:10px 20px;
+  text-align:center;
+}
+.castle-ar-label .castle-name{
+  font-family:'Cinzel',serif;
+  font-size:15px;color:#f0b543;font-weight:600;
+  text-shadow:0 0 20px rgba(240,181,67,0.5);
+}
+.castle-ar-label .castle-era{
+  font-size:11px;color:rgba(255,255,255,0.6);
+  letter-spacing:2px;margin-top:2px;
+}
+.explore-btn-overlay{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  background:rgba(200,146,10,0.9);
+  color:#1a0e00;font-size:12px;font-weight:600;
+  font-family:'Cinzel',serif;letter-spacing:0.05em;
+  padding:8px 20px;border-radius:20px;border:none;cursor:pointer;
+  box-shadow:0 4px 16px rgba(200,146,10,0.5);
+  white-space:nowrap;
+  transition:transform 0.15s;
+}
+.explore-btn-overlay:active{transform:translateX(-50%) scale(0.96);}
+
+.castle-body{
+  flex:1;overflow-y:auto;
+  background:#faf5eb;
+  padding:18px;
+}
+.castle-body::-webkit-scrollbar{width:0;}
+
+.time-slider-box{
+  background:#fff;
+  border-radius:16px;padding:16px;
+  border:1px solid rgba(0,0,0,0.08);
+  box-shadow:0 2px 12px rgba(0,0,0,0.07);
+  margin-bottom:14px;
+}
+.ts-label{
+  font-size:11px;font-weight:500;color:#888;
+  text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:10px;display:flex;justify-content:space-between;
+}
+.ts-label span{color:#c8920a;font-size:12px;}
+.ts-track{position:relative;height:6px;background:#e8dcc8;border-radius:3px;margin-bottom:8px;}
+.ts-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#c8920a,#f0b543);width:30%;}
+.ts-thumb{
+  position:absolute;top:50%;right:70%;transform:translate(50%,-50%);
+  width:18px;height:18px;border-radius:50%;
+  background:#c8920a;box-shadow:0 2px 8px rgba(200,146,10,0.5);
+  cursor:pointer;
+}
+input[type=range].ts-input{
+  width:100%;margin:0;
+  -webkit-appearance:none;appearance:none;
+  height:6px;background:linear-gradient(90deg,#c8920a var(--val,30%),#e8dcc8 var(--val,30%));
+  border-radius:3px;outline:none;cursor:pointer;
+}
+input[type=range].ts-input::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:20px;height:20px;border-radius:50%;
+  background:#c8920a;box-shadow:0 2px 8px rgba(200,146,10,0.5);
+  cursor:pointer;
+}
+.ts-years{display:flex;justify-content:space-between;font-size:10px;color:#aaa;}
+.ts-era-display{
+  text-align:center;margin-top:8px;
+  font-family:'Cinzel',serif;font-size:13px;color:#5c3a00;font-weight:600;
+}
+
+.audio-vignettes{margin-bottom:14px;}
+.av-title{font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+.vignette{
+  display:flex;align-items:center;gap:12px;
+  background:#fff;border-radius:12px;padding:12px;
+  border:1px solid rgba(0,0,0,0.07);
+  margin-bottom:8px;cursor:pointer;
+  transition:background 0.15s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.vignette:active{background:#fdf5e0;}
+.vig-play{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#c8920a,#8a6200);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:13px;flex-shrink:0;
+}
+.vig-info .vig-name{font-size:13px;font-weight:500;color:#1a1a12;}
+.vig-info .vig-dur{font-size:11px;color:#999;}
+.vig-lock{margin-left:auto;font-size:14px;color:#ccc;}
+
+/* ══════════════════════════════════
+   SCREEN 4 — SPŁYW DUNAJCEM
+══════════════════════════════════ */
+#s-dunajec{background:#0a1f30;}
+
+.river-view{
+  position:relative;height:300px;flex-shrink:0;overflow:hidden;
+}
+.river-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1502786129293-79981df4e689?w=800&q=80') center/cover;
+}
+.river-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,30,45,0.2) 0%,rgba(10,30,45,0.75) 100%);
+}
+.raftsman{
+  position:absolute;bottom:14px;left:14px;
+  display:flex;align-items:flex-end;gap:10px;
+}
+.raftsman-figure{
+  font-size:48px;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  animation:sway 3s ease-in-out infinite;
+}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.raftsman-speech{
+  background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px 12px 12px 4px;
+  padding:8px 12px;max-width:180px;
+  font-size:11px;color:#fff;line-height:1.4;
+  margin-bottom:20px;
+}
+
+.river-hud-top{
+  position:absolute;top:36px;left:14px;right:14px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.river-loc{
+  background:rgba(0,0,0,0.45);backdrop-filter:blur(8px);
+  border:1px solid rgba(74,172,204,0.4);
+  border-radius:20px;padding:5px 12px;
+}
+.river-loc .loc-name{font-family:'Cinzel',serif;font-size:12px;color:#4aaccc;}
+.river-loc .loc-dist{font-size:10px;color:rgba(255,255,255,0.5);}
+.river-progress-bar{
+  position:absolute;bottom:10px;left:14px;right:14px;
+  height:4px;background:rgba(255,255,255,0.2);border-radius:2px;
+}
+.river-progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#4aaccc,#7cb84a);width:42%;}
+
+.river-body{
+  flex:1;overflow-y:auto;background:#eef5f8;padding:18px;
+}
+.river-body::-webkit-scrollbar{width:0;}
+
+.river-chapters{margin-bottom:14px;}
+.rc-title{font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+.chapter{
+  display:flex;align-items:center;gap:12px;
+  background:#fff;border-radius:12px;padding:12px;
+  border:1px solid rgba(0,0,0,0.07);
+  margin-bottom:8px;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  transition:background 0.15s;
+}
+.chapter:active{background:#e8f4f8;}
+.ch-num{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#1a7ab0,#0e4a6e);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:12px;font-weight:600;flex-shrink:0;
+}
+.ch-num.done{background:#ccc;}
+.ch-num.active{background:linear-gradient(135deg,#4aaccc,#1a7ab0);box-shadow:0 0 0 3px rgba(74,172,204,0.25);}
+.ch-info .ch-name{font-size:13px;font-weight:500;color:#1a1a12;}
+.ch-info .ch-km{font-size:11px;color:#999;}
+.ch-play{margin-left:auto;font-size:16px;color:#1a7ab0;}
+
+.wildlife-box{
+  background:#fff;border-radius:14px;padding:14px;
+  border:1px solid rgba(0,0,0,0.07);
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.wl-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.wl-icon{font-size:20px;}
+.wl-title{font-size:13px;font-weight:500;color:#1a1a12;}
+.wl-alert{
+  display:flex;align-items:center;gap:10px;
+  background:#e8f4f8;border-radius:10px;padding:10px;
+  border:1px solid rgba(74,172,204,0.2);
+}
+.wl-alert-icon{font-size:22px;}
+.wl-alert-text{font-size:12px;color:#0e4a6e;line-height:1.4;}
+
+/* ══════════════════════════════════
+   SCREEN 5 — SOKOLICA (QUESTS)
+══════════════════════════════════ */
+#s-sokolica{background:#1a0e08;}
+
+.quest-header{
+  position:relative;height:250px;flex-shrink:0;overflow:hidden;
+}
+.quest-header-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80') center/cover;
+}
+.quest-header-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(26,14,8,0.2) 0%,rgba(26,14,8,0.8) 100%);
+}
+.quest-header-content{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;padding:14px 18px;
+}
+.xp-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,#c8920a,#8a6200);
+  color:#fff;border-radius:20px;padding:4px 12px;
+  font-size:11px;font-weight:600;margin-bottom:8px;
+}
+.quest-header-title{
+  font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,0.5);
+}
+.quest-header-sub{font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px;}
+
+.quest-body{flex:1;overflow-y:auto;background:#f9f5ef;padding:18px;}
+.quest-body::-webkit-scrollbar{width:0;}
+
+/* passport */
+.passport{
+  background:linear-gradient(135deg,#2d5a1a,#1a3a0f);
+  border-radius:16px;padding:16px;
+  margin-bottom:14px;
+  border:1px solid rgba(124,184,74,0.3);
+  position:relative;overflow:hidden;
+}
+.passport::before{
+  content:'';position:absolute;top:-20px;right:-20px;
+  width:100px;height:100px;border-radius:50%;
+  background:rgba(124,184,74,0.1);
+}
+.passport-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.passport-label{font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:0.12em;text-transform:uppercase;}
+.passport-title{font-family:'Cinzel',serif;font-size:14px;color:#7cb84a;}
+.xp-counter{text-align:right;}
+.xp-val{font-size:20px;font-weight:600;color:#f0b543;}
+.xp-lbl{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;}
+.stamps{display:flex;gap:8px;flex-wrap:wrap;}
+.stamp{
+  width:44px;height:44px;border-radius:8px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08);
+  font-size:18px;cursor:pointer;
+  transition:transform 0.15s;
+  position:relative;
+}
+.stamp:active{transform:scale(0.93);}
+.stamp.earned{background:rgba(124,184,74,0.2);border-color:rgba(124,184,74,0.5);}
+.stamp .stamp-check{
+  position:absolute;top:-3px;right:-3px;
+  width:14px;height:14px;border-radius:50%;
+  background:#4a8c2a;color:#fff;font-size:8px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* quests list */
+.quests-label{font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+.quest-item{
+  background:#fff;border-radius:14px;padding:14px;
+  border:1px solid rgba(0,0,0,0.07);
+  margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.qi-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.qi-icon{font-size:22px;}
+.qi-name{font-size:14px;font-weight:500;color:#1a1a12;flex:1;}
+.qi-xp{
+  background:#fdf0d0;color:#8a6200;
+  font-size:10px;font-weight:600;
+  padding:2px 8px;border-radius:10px;
+}
+.qi-desc{font-size:12px;color:#777;line-height:1.5;margin-bottom:8px;}
+.qi-progress{height:5px;background:#f0e8d8;border-radius:3px;}
+.qi-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#4a8c2a,#7cb84a);}
+.qi-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:6px;}
+.qi-count{font-size:11px;color:#aaa;}
+.qi-btn{
+  background:#4a8c2a;color:#fff;
+  border:none;border-radius:8px;
+  padding:5px 12px;font-size:11px;font-weight:500;
+  cursor:pointer;
+}
+
+/* leaderboard */
+.leaderboard{background:#fff;border-radius:14px;padding:14px;border:1px solid rgba(0,0,0,0.07);box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:10px;}
+.lb-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.lb-icon{font-size:18px;}
+.lb-title{font-size:13px;font-weight:500;color:#1a1a12;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f0e8d8;}
+.lb-row:last-child{border-bottom:none;}
+.lb-pos{width:20px;font-size:12px;font-weight:600;color:#aaa;text-align:center;}
+.lb-pos.gold{color:#c8920a;}
+.lb-pos.silver{color:#888;}
+.lb-pos.bronze{color:#a0522d;}
+.lb-avatar{width:28px;height:28px;border-radius:50%;background:#e8dcc8;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.lb-name{flex:1;font-size:13px;color:#1a1a12;}
+.lb-pts{font-size:12px;font-weight:600;color:#4a8c2a;}
+
+/* achievement popup */
+.achievement-popup{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:500;
+  backdrop-filter:blur(4px);
+  padding:24px;
+}
+.achievement-popup.show{display:flex;}
+.achievement-card{
+  background:linear-gradient(135deg,#2d1f00,#1a1200);
+  border:1px solid rgba(200,146,10,0.4);
+  border-radius:24px;padding:28px 24px;
+  text-align:center;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+.ach-label{font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:4px;}
+.ach-title{font-family:'Cinzel',serif;font-size:13px;color:#f0b543;margin-bottom:16px;}
+.ach-badge-icon{
+  width:90px;height:90px;border-radius:50%;
+  background:linear-gradient(135deg,#c8920a,#8a6200);
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;margin:0 auto 16px;
+  box-shadow:0 0 30px rgba(200,146,10,0.4);
+  animation:glow 2s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 30px rgba(200,146,10,0.4)}50%{box-shadow:0 0 50px rgba(200,146,10,0.7)}}
+.ach-name{font-family:'Cinzel',serif;font-size:18px;color:#fff;font-weight:700;margin-bottom:6px;}
+.ach-xp{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(200,146,10,0.2);border:1px solid rgba(200,146,10,0.4);
+  color:#f0b543;padding:4px 14px;border-radius:20px;
+  font-size:12px;font-weight:600;margin-bottom:20px;
+}
+.ach-buttons{display:flex;gap:10px;}
+.ach-btn-view{
+  flex:1;background:#c8920a;color:#fff;border:none;border-radius:12px;
+  padding:12px;font-size:13px;font-weight:600;cursor:pointer;
+  font-family:'Cinzel',serif;
+}
+.ach-btn-next{
+  flex:1;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  color:#fff;border-radius:12px;padding:12px;font-size:13px;font-weight:600;cursor:pointer;
+}
+
+/* ══════════════════════════════════
+   SCREEN 6 — EMERGENCY ALERT
+══════════════════════════════════ */
+#s-emergency{
+  background:linear-gradient(170deg,#1a0505,#2d0808,#1a0505);
+}
+.emergency-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1527482937786-6608f6e14c15?w=800&q=60') center/cover;
+  opacity:0.15;
+}
+.emergency-content{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;
+  height:100%;padding:50px 22px 28px;
+  align-items:center;
+}
+.alert-icon{
+  font-size:56px;
+  animation:alertPulse 1s ease-in-out infinite;
+  margin-bottom:12px;
+}
+@keyframes alertPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.alert-badge{
+  background:#c0392b;color:#fff;
+  font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  padding:4px 16px;border-radius:20px;margin-bottom:12px;
+  animation:bgFlash 1s ease-in-out infinite;
+}
+@keyframes bgFlash{0%,100%{background:#c0392b}50%{background:#e74c3c}}
+.alert-title{
+  font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:#fff;
+  text-align:center;margin-bottom:6px;
+}
+.alert-desc{font-size:13px;color:rgba(255,255,255,0.6);text-align:center;line-height:1.6;margin-bottom:24px;}
+
+.alert-info-cards{width:100%;display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.alert-info-card{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.aic-icon{font-size:20px;}
+.aic-text .aic-label{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;}
+.aic-text .aic-val{font-size:13px;color:#fff;font-weight:500;margin-top:1px;}
+
+.sos-btn{
+  width:100%;
+  background:linear-gradient(135deg,#c0392b,#922b21);
+  color:#fff;border:none;border-radius:16px;
+  padding:18px;
+  font-family:'Cinzel',serif;font-size:15px;font-weight:700;
+  cursor:pointer;letter-spacing:0.08em;
+  box-shadow:0 6px 30px rgba(192,57,43,0.5);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:10px;
+  transition:transform 0.15s;
+}
+.sos-btn:active{transform:scale(0.97);}
+.map-offline-btn{
+  width:100%;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  color:#fff;border-radius:16px;
+  padding:14px;
+  font-size:13px;font-weight:500;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background 0.15s;
+}
+.map-offline-btn:active{background:rgba(255,255,255,0.18);}
+
+/* ══════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════ */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;
+  height:70px;
+  background:rgba(10,15,8,0.95);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;
+  padding:0 8px;
+  z-index:200;
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;cursor:pointer;padding:6px 2px;
+  opacity:0.5;transition:opacity 0.2s;
+}
+.nav-item.active{opacity:1;}
+.nav-item:active{opacity:0.8;}
+.nav-icon{font-size:18px;}
+.nav-label{font-size:9px;color:rgba(255,255,255,0.8);letter-spacing:0.05em;font-weight:500;}
+.nav-item.active .nav-label{color:#7cb84a;}
+
+/* sos floating button */
+.sos-float{
+  position:absolute;bottom:75px;right:14px;
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#c0392b,#922b21);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:11px;font-weight:700;
+  box-shadow:0 4px 16px rgba(192,57,43,0.5);
+  cursor:pointer;z-index:199;
+  letter-spacing:0.05em;
+  border:none;
+  font-family:'DM Sans',sans-serif;
+  transition:transform 0.15s;
+}
+.sos-float:active{transform:scale(0.93);}
+
+/* ══════════════════════════════════
+   SOS TOAST
+══════════════════════════════════ */
+.sos-toast{
+  position:absolute;top:38px;left:14px;right:14px;
+  background:rgba(192,57,43,0.95);
+  border-radius:14px;padding:12px 16px;
+  display:none;z-index:600;
+  animation:slideDown 0.3s ease;
+  flex-direction:column;gap:4px;
+  border:1px solid rgba(255,150,150,0.3);
+}
+.sos-toast.show{display:flex;}
+@keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sos-toast-title{font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:6px;}
+.sos-toast-body{font-size:11px;color:rgba(255,255,255,0.75);}
+</style>
+</head>
+<body>
+<div class="app-shell">
+<div class="phone">
+  <div class="notch"></div>
+
+  <!-- ░░ SCREEN: HOME ░░ -->
+  <div class="screen active" id="s-home">
+    <div class="home-bg"></div>
+    <div class="home-overlay"></div>
+    <div class="home-content">
+      <div class="home-logo">
+        <div class="bird-icon">🦅</div>
+        <div class="brand">Pieniny <span>AR</span></div>
+        <div class="brand" style="font-size:22px;letter-spacing:4px;margin-top:0">Odkrywca</div>
+        <div class="sub">Rzeczywistość Rozszerzona · Polska</div>
+      </div>
+      <div class="home-tagline">Odkryj Pieniny jak nigdy dotąd</div>
+
+      <div class="tiles-label">Wybierz cel wyprawy</div>
+      <div class="tiles">
+        <div class="tile tile-trzy" onclick="goTo('s-trzy')">
+          <div class="tile-bg"></div>
+          <div class="tile-overlay"></div>
+          <div class="tile-badge">AR</div>
+          <div class="tile-content">
+            <span class="tile-icon">⛰️</span>
+            <div class="tile-name">Trzy Korony</div>
+            <div class="tile-desc">982 m · Szlak trudny</div>
+          </div>
+        </div>
+        <div class="tile tile-sokolica" onclick="goTo('s-sokolica')">
+          <div class="tile-bg"></div>
+          <div class="tile-overlay"></div>
+          <div class="tile-badge">QUESTY</div>
+          <div class="tile-content">
+            <span class="tile-icon">🦅</span>
+            <div class="tile-name">Sokolica</div>
+            <div class="tile-desc">747 m · Łatwy</div>
+          </div>
+        </div>
+        <div class="tile tile-zamek" onclick="goTo('s-zamek')">
+          <div class="tile-bg"></div>
+          <div class="tile-overlay"></div>
+          <div class="tile-badge">XV WIEK</div>
+          <div class="tile-content">
+            <span class="tile-icon">🏰</span>
+            <div class="tile-name">Zamek Czorsztyn</div>
+            <div class="tile-desc">Rekonstrukcja historyczna</div>
+          </div>
+        </div>
+        <div class="tile tile-dunajec" onclick="goTo('s-dunajec')">
+          <div class="tile-bg"></div>
+          <div class="tile-overlay"></div>
+          <div class="tile-badge">18 km</div>
+          <div class="tile-content">
+            <span class="tile-icon">🛶</span>
+            <div class="tile-name">Spływ Dunajcem</div>
+            <div class="tile-desc">Flisacki przewodnik AR</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-bottom">
+        <button class="btn-primary" onclick="goTo('s-trzy')">🧭 Rozpocznij przygodę</button>
+        <button class="btn-secondary" onclick="alert('Pobieranie map offline… (380 MB)')">⬇ Mapy offline</button>
+      </div>
+    </div>
+    <button class="sos-float" onclick="showSOS()">SOS</button>
+  </div>
+
+  <!-- ░░ SCREEN: TRZY KORONY ░░ -->
+  <div class="screen" id="s-trzy">
+    <div class="ar-view">
+      <div class="ar-view-bg"></div>
+      <div class="ar-hud">
+        <div class="ar-top">
+          <div class="ar-signal">
+            <div class="signal-dot"></div>
+            <span>GPS · AR aktywny</span>
+          </div>
+          <div class="ar-peak-label">
+            <div class="peak-name">Trzy Korony</div>
+            <div class="peak-elev">— 982 m n.p.m. —</div>
+          </div>
+        </div>
+        <div class="ar-arrow">
+          <div class="arrow-up"></div>
+          <div class="arrow-label">Szczyt · 1.5 km</div>
+        </div>
+        <div class="ar-bottom">
+          <div class="ar-info-pill">
+            <span class="pill-icon">⬆</span>
+            <div class="pill-text">
+              <div class="val">1.5 km</div>
+              <div class="lbl">Dystans</div>
+            </div>
+          </div>
+          <div class="ar-info-pill">
+            <span class="pill-icon">⏱</span>
+            <div class="pill-text">
+              <div class="val">25 min</div>
+              <div class="lbl">Szacowany czas</div>
+            </div>
+          </div>
+          <div class="ar-info-pill">
+            <span class="pill-icon">🧗</span>
+            <div class="pill-text">
+              <div class="val">Trudny</div>
+              <div class="lbl">Poziom</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ar-fact">
+        <span>🍄</span>
+        <span>Ciekawostka: Trzy Korony zawdzięczają nazwę trzem charakterystycznym szczytom tworzącym koronę w kształcie trójzęba.</span>
+      </div>
+    </div>
+
+    <div class="trail-panel" style="padding-bottom:80px">
+      <div class="trail-badge">🔴 Szlak trudny</div>
+      <div class="trail-title">Trzy Korony — Szczyt</div>
+      <div class="trail-sub">Szlak czerwony · Start: Sromowce Niżne</div>
+
+      <div class="trail-stats">
+        <div class="stat-box"><div class="stat-val">3.2 km</div><div class="stat-lbl">Długość</div></div>
+        <div class="stat-box"><div class="stat-val">+420 m</div><div class="stat-lbl">Przewyższenie</div></div>
+        <div class="stat-box"><div class="stat-val">1h 40m</div><div class="stat-lbl">Czas</div></div>
+      </div>
+
+      <div class="waypoints">
+        <div class="wp-label">Punkty orientacyjne AR</div>
+        <div class="waypoint">
+          <div class="wp-dot done"></div>
+          <div class="wp-info"><div class="wp-name">Parking Sromowce</div><div class="wp-dist">0 km · Start</div></div>
+          <div class="wp-status">✓ Zaliczone</div>
+        </div>
+        <div class="waypoint">
+          <div class="wp-dot active"></div>
+          <div class="wp-info"><div class="wp-name">Rozwidlenie Okopy</div><div class="wp-dist">0.8 km · Skręć w lewo</div></div>
+          <div class="wp-status" style="color:#f0b543">⬤ Aktywny</div>
+        </div>
+        <div class="waypoint">
+          <div class="wp-dot"></div>
+          <div class="wp-info"><div class="wp-name">Schronisko PTTK</div><div class="wp-dist">2.1 km · Odpoczynek</div></div>
+          <div class="wp-status" style="color:#ccc">Przed tobą</div>
+        </div>
+        <div class="waypoint">
+          <div class="wp-dot"></div>
+          <div class="wp-info"><div class="wp-name">⛰️ Szczyt — 982 m</div><div class="wp-dist">3.2 km · Cel</div></div>
+          <div class="wp-status" style="color:#ccc">Przed tobą</div>
+        </div>
+      </div>
+
+      <button class="btn-ar-start">▶ Uruchom nawigację AR</button>
+    </div>
+
+    <div class="back-btn" onclick="goTo('s-home')">‹</div>
+    <button class="sos-float" onclick="showSOS()">SOS</button>
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="goTo('s-trzy')"><span class="nav-icon">🧭</span><span class="nav-label">Szlak AR</span></div>
+      <div class="nav-item" onclick="goTo('s-zamek')"><span class="nav-icon">🏰</span><span class="nav-label">Historia</span></div>
+      <div class="nav-item" onclick="goTo('s-dunajec')"><span class="nav-icon">🛶</span><span class="nav-label">Rzeka</span></div>
+      <div class="nav-item" onclick="goTo('s-sokolica')"><span class="nav-icon">⭐</span><span class="nav-label">Questy</span></div>
+      <div class="nav-item" onclick="goTo('s-home')"><span class="nav-icon">🏠</span><span class="nav-label">Start</span></div>
+    </div>
+  </div>
+
+  <!-- ░░ SCREEN: ZAMEK CZORSZTYN ░░ -->
+  <div class="screen" id="s-zamek">
+    <div class="castle-view">
+      <div class="castle-bg"></div>
+      <div class="castle-overlay"></div>
+      <div class="castle-ar-label">
+        <div class="castle-name">⚔️ Zamek w Czorsztynie</div>
+        <div class="castle-era">— XV WIEK —</div>
+      </div>
+      <button class="explore-btn-overlay" onclick="alert('Uruchamianie rekonstrukcji AR…\nSkieruj telefon na ruiny zamku!')">Odkryj przeszłość →</button>
+    </div>
+
+    <div class="castle-body" style="padding-bottom:80px">
+      <div class="time-slider-box">
+        <div class="ts-label">Suwak czasu <span id="era-label">ok. 1430 r.</span></div>
+        <input type="range" class="ts-input" min="0" max="100" value="30" id="timeSlider"
+          oninput="updateEra(this.value)">
+        <div class="ts-years"><span>1340 — Budowa</span><span>Dziś — Ruiny</span></div>
+        <div class="ts-era-display" id="era-display">🏰 Szczyt świetności — dwór królewski</div>
+      </div>
+
+      <div class="audio-vignettes">
+        <div class="av-title">Miniatury audio · Historia zamku</div>
+        <div class="vignette" onclick="playVig(this,'Dwór królewski — 60 sek.')">
+          <div class="vig-play">▶</div>
+          <div class="vig-info"><div class="vig-name">Dwór królewski</div><div class="vig-dur">60 sek · Dynastia Piastów</div></div>
+        </div>
+        <div class="vignette" onclick="playVig(this,'Oblężenie szwedzkie 1655 — 90 sek.')">
+          <div class="vig-play">▶</div>
+          <div class="vig-info"><div class="vig-name">Oblężenie szwedzkie 1655</div><div class="vig-dur">90 sek · Potop szwedzki</div></div>
+        </div>
+        <div class="vignette" onclick="playVig(this,'Legenda o Wodnej Pannie — 75 sek.')">
+          <div class="vig-play">▶</div>
+          <div class="vig-info"><div class="vig-name">Legenda o Wodnej Pannie</div><div class="vig-dur">75 sek · Folklor pienińskii</div></div>
+        </div>
+        <div class="vignette" style="opacity:0.5">
+          <div class="vig-play" style="background:#ccc">▶</div>
+          <div class="vig-info"><div class="vig-name">Opuszczenie zamku · XVII w.</div><div class="vig-dur">80 sek · Upadek fortecy</div></div>
+          <div class="vig-lock">🔒</div>
+        </div>
+        <div class="vignette" style="opacity:0.5">
+          <div class="vig-play" style="background:#ccc">▶</div>
+          <div class="vig-info"><div class="vig-name">Rekonstrukcja XXI w.</div><div class="vig-dur">55 sek · Badania archeologiczne</div></div>
+          <div class="vig-lock">🔒</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:14px;padding:14px;border:1px solid rgba(0,0,0,0.07);box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">📖 Drzewo genealogiczne właścicieli</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#faf5eb;border-radius:8px;">
+            <span style="font-size:16px;">👑</span>
+            <div><div style="font-size:13px;font-weight:500;color:#1a1a12;">Kazimierz Wielki</div><div style="font-size:11px;color:#888;">1340 — Fundator zamku</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#faf5eb;border-radius:8px;">
+            <span style="font-size:16px;">⚔️</span>
+            <div><div style="font-size:13px;font-weight:500;color:#1a1a12;">Władysław II Jagiełło</div><div style="font-size:11px;color:#888;">1400 — Rozbudowa</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#faf5eb;border-radius:8px;">
+            <span style="font-size:16px;">🏚️</span>
+            <div><div style="font-size:13px;font-weight:500;color:#1a1a12;">Ruiny — własność skarbu</div><div style="font-size:11px;color:#888;">XVIII w. — Pożar i opuszczenie</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-btn" onclick="goTo('s-home')">‹</div>
+    <button class="sos-float" onclick="showSOS()">SOS</button>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('s-trzy')"><span class="nav-icon">🧭</span><span class="nav-label">Szlak AR</span></div>
+      <div class="nav-item active" onclick="goTo('s-zamek')"><span class="nav-icon">🏰</span><span class="nav-label">Historia</span></div>
+      <div class="nav-item" onclick="goTo('s-dunajec')"><span class="nav-icon">🛶</span><span class="nav-label">Rzeka</span></div>
+      <div class="nav-item" onclick="goTo('s-sokolica')"><span class="nav-icon">⭐</span><span class="nav-label">Questy</span></div>
+      <div class="nav-item" onclick="goTo('s-home')"><span class="nav-icon">🏠</span><span class="nav-label">Start</span></div>
+    </div>
+  </div>
+
+  <!-- ░░ SCREEN: SPŁYW DUNAJCEM ░░ -->
+  <div class="screen" id="s-dunajec">
+    <div class="river-view">
+      <div class="river-bg"></div>
+      <div class="river-overlay"></div>
+      <div class="river-hud-top">
+        <div class="river-loc">
+          <div class="loc-name">Spływ Dunajcem</div>
+          <div class="loc-dist">Km 7.4 / 18 km · Przełom</div>
+        </div>
+        <div style="background:rgba(0,0,0,0.45);backdrop-filter:blur(8px);border:1px solid rgba(74,172,204,0.3);border-radius:20px;padding:5px 10px;">
+          <div style="display:flex;align-items:center;gap:5px;"><div class="signal-dot" style="background:#4aaccc"></div><span style="font-size:10px;color:#4aaccc;font-weight:500;">Tryb rzeczny aktywny</span></div>
+        </div>
+      </div>
+      <div class="raftsman">
+        <div class="raftsman-figure">⛵</div>
+        <div class="raftsman-speech">Witajcie na największym przełomie Pienin! Po lewej — Skała Łokietka, wapień jurajski sprzed 150 mln lat!</div>
+      </div>
+      <div class="river-progress-bar"><div class="river-progress-fill"></div></div>
+    </div>
+
+    <div class="river-body" style="padding-bottom:80px">
+      <div class="river-chapters">
+        <div class="rc-title">Rozdziały narracji · 18 odcinków</div>
+        <div class="chapter">
+          <div class="ch-num done">✓</div>
+          <div class="ch-info"><div class="ch-name">Start — Sromowce Wyżne</div><div class="ch-km">Km 0 · Wejście do przełomu</div></div>
+          <span class="ch-play">✓</span>
+        </div>
+        <div class="chapter">
+          <div class="ch-num done">✓</div>
+          <div class="ch-info"><div class="ch-name">Zamek Czorsztyn z wody</div><div class="ch-km">Km 2.1 · Historia obronna</div></div>
+          <span class="ch-play">✓</span>
+        </div>
+        <div class="chapter" style="border:1px solid rgba(74,172,204,0.35);">
+          <div class="ch-num active">▶</div>
+          <div class="ch-info"><div class="ch-name">Skała Łokietka — Geologia</div><div class="ch-km">Km 7.4 · Wapień jurajski · 150 mln lat</div></div>
+          <span class="ch-play" style="color:#4aaccc">▶</span>
+        </div>
+        <div class="chapter" onclick="playChapter(this)">
+          <div class="ch-num">4</div>
+          <div class="ch-info"><div class="ch-name">Granica Polska–Słowacja</div><div class="ch-km">Km 9.2 · Historia pogranicza</div></div>
+          <span class="ch-play">▶</span>
+        </div>
+        <div class="chapter" onclick="playChapter(this)">
+          <div class="ch-num">5</div>
+          <div class="ch-info"><div class="ch-name">Siedlisko rybołowa</div><div class="ch-km">Km 11.8 · Fauna rzeczna</div></div>
+          <span class="ch-play">▶</span>
+        </div>
+        <div class="chapter" style="opacity:0.5">
+          <div class="ch-num" style="background:#ccc;color:#fff">🔒</div>
+          <div class="ch-info"><div class="ch-name">+ 13 kolejnych rozdziałów</div><div class="ch-km">Odblokuj z pakietem Premium</div></div>
+        </div>
+      </div>
+
+      <div class="wildlife-box">
+        <div class="wl-header"><span class="wl-icon">🦦</span><span class="wl-title">Alert dzikich zwierząt</span></div>
+        <div class="wl-alert">
+          <span class="wl-alert-icon">🦅</span>
+          <span class="wl-alert-text">Zbliżasz się do gniazda <strong>rybołowa</strong> (Pandion haliaetus). Zachowaj ciszę. Siedlisko chronione PPN.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-btn" onclick="goTo('s-home')">‹</div>
+    <button class="sos-float" onclick="showSOS()">SOS</button>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('s-trzy')"><span class="nav-icon">🧭</span><span class="nav-label">Szlak AR</span></div>
+      <div class="nav-item" onclick="goTo('s-zamek')"><span class="nav-icon">🏰</span><span class="nav-label">Historia</span></div>
+      <div class="nav-item active" onclick="goTo('s-dunajec')"><span class="nav-icon">🛶</span><span class="nav-label">Rzeka</span></div>
+      <div class="nav-item" onclick="goTo('s-sokolica')"><span class="nav-icon">⭐</span><span class="nav-label">Questy</span></div>
+      <div class="nav-item" onclick="goTo('s-home')"><span class="nav-icon">🏠</span><span class="nav-label">Start</span></div>
+    </div>
+  </div>
+
+  <!-- ░░ SCREEN: SOKOLICA — QUESTY ░░ -->
+  <div class="screen" id="s-sokolica">
+    <div class="quest-header">
+      <div class="quest-header-bg"></div>
+      <div class="quest-header-overlay"></div>
+      <div class="back-btn" onclick="goTo('s-home')">‹</div>
+      <div class="quest-header-content">
+        <div class="xp-badge">⭐ 280 XP zdobyte</div>
+        <div class="quest-header-title">Sokolica · Questy</div>
+        <div class="quest-header-sub">747 m n.p.m. · Park Pienińskii</div>
+      </div>
+    </div>
+
+    <div class="quest-body" style="padding-bottom:80px">
+      <div class="passport">
+        <div class="passport-top">
+          <div><div class="passport-label">Paszport Odkrywcy</div><div class="passport-title">🌲 Pieniny Odkrywca</div></div>
+          <div class="xp-counter"><div class="xp-val">280</div><div class="xp-lbl">XP</div></div>
+        </div>
+        <div class="stamps">
+          <div class="stamp earned" title="Sokolica zaliczona">🦅<div class="stamp-check">✓</div></div>
+          <div class="stamp earned" title="Zamek odkryty">🏰<div class="stamp-check">✓</div></div>
+          <div class="stamp earned" title="Spływ Dunajcem">🛶<div class="stamp-check">✓</div></div>
+          <div class="stamp" title="Trzy Korony — do zaliczenia">⛰️</div>
+          <div class="stamp" title="Rośliny endemiczne — do odkrycia">🌿</div>
+          <div class="stamp" title="Legenda o Dunajcu — do odblokowania">👻</div>
+        </div>
+      </div>
+
+      <div class="quests-label">Aktywne questy</div>
+
+      <div class="quest-item">
+        <div class="qi-top">
+          <span class="qi-icon">🌿</span>
+          <span class="qi-name">Botanik pienińskii</span>
+          <span class="qi-xp">+75 XP</span>
+        </div>
+        <div class="qi-desc">Znajdź i sfotografuj 3 endemiczne gatunki roślin pienińskich: oset pieniński, dzwonek pieniński i skalnicę gronkową.</div>
+        <div class="qi-progress"><div class="qi-fill" style="width:33%"></div></div>
+        <div class="qi-bottom"><span class="qi-count">1 / 3 znalezione</span><button class="qi-btn" onclick="showAchievement()">Kontynuuj ▶</button></div>
+      </div>
+
+      <div class="quest-item">
+        <div class="qi-top">
+          <span class="qi-icon">⛰️</span>
+          <span class="qi-name">Zdobywca Trzech Koron</span>
+          <span class="qi-xp">+50 XP</span>
+        </div>
+        <div class="qi-desc">Stań na wszystkich 5 punktach widokowych Trzech Koron i odblokuj panoramę AR całych Pienin.</div>
+        <div class="qi-progress"><div class="qi-fill" style="width:60%"></div></div>
+        <div class="qi-bottom"><span class="qi-count">3 / 5 punktów</span><button class="qi-btn" onclick="goTo('s-trzy')">Idź na szlak ▶</button></div>
+      </div>
+
+      <div class="quest-item" style="opacity:0.6">
+        <div class="qi-top">
+          <span class="qi-icon">👻</span>
+          <span class="qi-name">Żywe Legendy — Flisak Dunajca</span>
+          <span class="qi-xp" style="background:#f0e8ff;color:#534AB7">+100 XP</span>
+        </div>
+        <div class="qi-desc">Spotkaj ducha flisaka przy brzegu Dunajca o świcie. Dostępne tylko z pakietem Premium.</div>
+        <div class="qi-progress"><div class="qi-fill" style="width:0%"></div></div>
+        <div class="qi-bottom"><span class="qi-count">🔒 Premium</span><button class="qi-btn" style="background:#534AB7">Odblokuj</button></div>
+      </div>
+
+      <div class="leaderboard">
+        <div class="lb-header"><span class="lb-icon">🏆</span><span class="lb-title">Top odkrywcy tego tygodnia</span></div>
+        <div class="lb-row"><span class="lb-pos gold">1</span><div class="lb-avatar">👧</div><span class="lb-name">Marta K.</span><span class="lb-pts">1 240 XP</span></div>
+        <div class="lb-row"><span class="lb-pos silver">2</span><div class="lb-avatar">👦</div><span class="lb-name">Piotr W.</span><span class="lb-pts">980 XP</span></div>
+        <div class="lb-row"><span class="lb-pos bronze">3</span><div class="lb-avatar">👩</div><span class="lb-name">Anna S.</span><span class="lb-pts">755 XP</span></div>
+        <div class="lb-row"><span class="lb-pos" style="color:#4a8c2a;font-weight:700">Ty</span><div class="lb-avatar" style="background:#d4f0b8">😊</div><span class="lb-name" style="color:#4a8c2a">Ty</span><span class="lb-pts" style="color:#4a8c2a">280 XP</span></div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('s-trzy')"><span class="nav-icon">🧭</span><span class="nav-label">Szlak AR</span></div>
+      <div class="nav-item" onclick="goTo('s-zamek')"><span class="nav-icon">🏰</span><span class="nav-label">Historia</span></div>
+      <div class="nav-item" onclick="goTo('s-dunajec')"><span class="nav-icon">🛶</span><span class="nav-label">Rzeka</span></div>
+      <div class="nav-item active" onclick="goTo('s-sokolica')"><span class="nav-icon">⭐</span><span class="nav-label">Questy</span></div>
+      <div class="nav-item" onclick="goTo('s-home')"><span class="nav-icon">🏠</span><span class="nav-label">Start</span></div>
+    </div>
+    <button class="sos-float" onclick="showSOS()">SOS</button>
+
+    <!-- Achievement popup -->
+    <div class="achievement-popup" id="achPopup">
+      <div class="achievement-card">
+        <div class="ach-label">Odznaka odblokowana</div>
+        <div class="ach-title">Gratulacje!</div>
+        <div class="ach-badge-icon">⛰️</div>
+        <div class="ach-name">Zdobywca Trzech Koron</div>
+        <div class="ach-xp">⭐ Zdobyto 50 XP</div>
+        <div class="ach-buttons">
+          <button class="ach-btn-view" onclick="closeAchievement();goTo('s-sokolica')">🏆 Osiągnięcia</button>
+          <button class="ach-btn-next" onclick="closeAchievement()">Następny quest →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░ SCREEN: EMERGENCY ░░ -->
+  <div class="screen" id="s-emergency">
+    <div class="emergency-bg"></div>
+    <div class="emergency-content">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-badge">🔴 Alert pogodowy</div>
+      <div class="alert-title">Zbliża się burza</div>
+      <div class="alert-desc">Silna burza przewidywana za 45 minut. Natychmiast zejdź ze szlaku i znajdź schronienie.</div>
+
+      <div class="alert-info-cards">
+        <div class="alert-info-card">
+          <span class="aic-icon">📍</span>
+          <div class="aic-text"><div class="aic-label">Twoja pozycja</div><div class="aic-val">49°25'12"N  20°19'44"E · Alt. 820 m</div></div>
+        </div>
+        <div class="alert-info-card">
+          <span class="aic-icon">🏠</span>
+          <div class="aic-text"><div class="aic-label">Najbliższe schronisko</div><div class="aic-val">Schronisko PTTK Trzy Korony — 1.2 km</div></div>
+        </div>
+        <div class="alert-info-card">
+          <span class="aic-icon">📶</span>
+          <div class="aic-text"><div class="aic-label">Sygnał GPS</div><div class="aic-val">Tryb offline aktywny — mapy dostępne</div></div>
+        </div>
+      </div>
+
+      <button class="sos-btn" onclick="triggerSOS()">🆘 Aktywuj SOS — TOPR</button>
+      <button class="map-offline-btn" onclick="goTo('s-trzy')">🗺️ Mapa offline</button>
+      <button class="map-offline-btn" style="margin-top:8px" onclick="goTo('s-home')">← Powrót do menu</button>
+    </div>
+  </div>
+
+  <!-- SOS Toast (globalny) -->
+  <div class="sos-toast" id="sosToast">
+    <div class="sos-toast-title">🆘 Wysyłanie SOS…</div>
+    <div class="sos-toast-body">Współrzędne GPS wysłane do TOPR i kontaktu alarmowego</div>
+  </div>
+
+</div><!-- /phone -->
+</div><!-- /app-shell -->
+
+<script>
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function updateEra(v){
+  const label = document.getElementById('era-label');
+  const disp = document.getElementById('era-display');
+  v = parseInt(v);
+  if(v<20){label.textContent='ok. 1340 r.';disp.textContent='🏗️ Budowa zamku — Kazimierz Wielki';}
+  else if(v<40){label.textContent='ok. 1430 r.';disp.textContent='🏰 Szczyt świetności — dwór królewski';}
+  else if(v<60){label.textContent='ok. 1655 r.';disp.textContent='⚔️ Oblężenie szwedzkie — zniszczenia';}
+  else if(v<80){label.textContent='ok. 1720 r.';disp.textContent='🔥 Pożar i opuszczenie fortecy';}
+  else{label.textContent='Dziś';disp.textContent='🪨 Ruiny — obszar chroniony NID';}
+  const inp=document.getElementById('timeSlider');
+  inp.style.background=`linear-gradient(90deg,#c8920a ${v}%,#e8dcc8 ${v}%)`;
+}
+
+function playVig(el,name){
+  const play=el.querySelector('.vig-play');
+  if(play.textContent==='▶'){
+    document.querySelectorAll('.vig-play').forEach(p=>p.textContent='▶');
+    play.textContent='⏸';
+    setTimeout(()=>{play.textContent='▶';},3000);
+  } else { play.textContent='▶'; }
+}
+
+function playChapter(el){
+  const num=el.querySelector('.ch-num');
+  const play=el.querySelector('.ch-play');
+  num.classList.add('active');
+  play.textContent='⏸';
+  play.style.color='#4aaccc';
+  setTimeout(()=>{
+    num.classList.remove('active');
+    num.classList.add('done');
+    num.textContent='✓';
+    play.textContent='✓';
+  },2500);
+}
+
+function showAchievement(){
+  document.getElementById('achPopup').classList.add('show');
+}
+function closeAchievement(){
+  document.getElementById('achPopup').classList.remove('show');
+}
+
+function showSOS(){
+  goTo('s-emergency');
+}
+
+function triggerSOS(){
+  const toast=document.getElementById('sosToast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),3500);
+}
+
+// time slider init
+document.getElementById('timeSlider').style.background='linear-gradient(90deg,#c8920a 30%,#e8dcc8 30%)';
+</script>
+</body>
+</html>
