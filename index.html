@@ -149,6 +149,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 0;
+  padding-top: 18vh;
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
   margin-top: auto;
 }
@@ -186,52 +187,86 @@ html, body {
 }
 
 /* ---- BOTTOM ICONS ---- */
-.land-icons {
-  display: flex;
-  gap: 0;
-  justify-content: center;
-  width: 100%;
-  max-width: 370px;
-  margin-top: 14px;
-  margin-bottom: 4px;
-}
-
-.land-icon-item {
+/* ---- HERO SOS BUTTON ---- */
+.sos-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px 16px;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 0.15s;
-  flex: 1;
+  gap: 8px;
+  margin-top: 14px;
+  margin-bottom: 2px;
 }
-.land-icon-item:active { transform: scale(0.92); }
 
-.land-icon-circle {
-  width: 54px; height: 54px;
-  border-radius: 50%;
-  background: rgba(8, 18, 12, 0.70);
-  border: 1.5px solid rgba(201,168,76,0.6);
+.sos-hero-btn {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border: none;
+  background: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.07);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s;
+}
+.sos-hero-btn:active { transform: scale(0.93); }
+
+.sos-hero-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(192, 57, 43, 0.5);
+  animation: sos-ripple 2.5s ease-out infinite;
+}
+.sos-ring-outer {
+  width: 88px; height: 88px;
+  animation-delay: 0s;
+}
+.sos-ring-inner {
+  width: 72px; height: 72px;
+  animation-delay: 0.4s;
+  border-color: rgba(192,57,43,0.35);
+}
+@keyframes sos-ripple {
+  0%   { transform: scale(0.92); opacity: 0.9; }
+  70%  { transform: scale(1.18); opacity: 0; }
+  100% { transform: scale(1.18); opacity: 0; }
 }
 
-.land-icon-label {
-  font-size: 0.60rem;
-  color: rgba(255,255,255,0.88);
+.sos-hero-core {
+  position: relative;
+  z-index: 2;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e74c3c, #a93226);
+  border: 2px solid rgba(255,255,255,0.25);
+  box-shadow:
+    0 0 0 3px rgba(192,57,43,0.3),
+    0 6px 24px rgba(192,57,43,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.sos-hero-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.sos-hero-text {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.6);
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'Crimson Pro', serif;
-  font-weight: 600;
-  white-space: nowrap;
 }
 
 /* ============================================================
@@ -491,9 +526,20 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-eve
       </button>
 
       <!-- Bottom icons -->
-      <div class="land-icons">
+      <div class="sos-wrap">
+        <button class="sos-hero-btn" onclick="openSOS()">
+          <div class="sos-hero-ring sos-ring-outer"></div>
+          <div class="sos-hero-ring sos-ring-inner"></div>
+          <div class="sos-hero-core">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span class="sos-hero-label">SOS</span>
+          </div>
+        </button>
       </div>
-
       <div class="land-app-subtitle">Aplikacja turystyczna AR</div>
 
     </div><!-- /landing-buttons -->
