@@ -307,20 +307,24 @@ html, body {
 .attr-back-btn:active { background: rgba(255,255,255,0.12); }
 
 .attr-hero-text { flex: 1; }
-.attr-hero-eyebrow {
-  font-size: 0.65rem;
-  color: var(--gold);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-family: 'Crimson Pro', serif;
-  margin-bottom: 2px;
-}
-.attr-hero-title {
+.attr-hero-pieniny {
   font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
+  font-size: clamp(1.8rem, 7vw, 2.4rem);
   font-style: italic;
-  color: var(--cream);
+  font-weight: 900;
+  color: var(--white);
   line-height: 1;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+.attr-hero-tagline {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(0.72rem, 2.5vw, 0.88rem);
+  font-weight: 400;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 
 /* Filter chips */
@@ -335,26 +339,30 @@ html, body {
 .attr-filters::-webkit-scrollbar { display: none; }
 
 .filter-chip {
-  padding: 7px 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.5);
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(201,168,76,0.25);
+  background: rgba(8,18,12,0.60);
+  color: rgba(255,255,255,0.6);
   font-family: 'Crimson Pro', serif;
-  font-size: 0.82rem;
-  letter-spacing: 0.5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s;
+  transition: all 0.22s;
   flex-shrink: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .filter-chip.active {
-  background: linear-gradient(135deg, #1e5a30, #2d7a45);
+  background: linear-gradient(135deg, #1a5a2e 0%, #2a7a42 60%, #1a5a2e 100%);
   border-color: var(--gold);
-  color: var(--cream);
-  font-weight: 600;
-  box-shadow: 0 2px 10px rgba(30,90,48,0.4);
+  color: var(--white);
+  box-shadow: 0 3px 14px rgba(30,90,48,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
 }
+.filter-chip:active { transform: scale(0.95); }
 
 /* Grid */
 .attr-grid {
@@ -643,18 +651,20 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-eve
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
     </button>
     <div class="attr-hero-text">
-      <div class="attr-hero-eyebrow">🏔️ Pieniny Explorer</div>
-      <div class="attr-hero-title">Wybierz atrakcję</div>
+      <div class="attr-hero-pieniny">Pieniny</div>
+      <div class="attr-hero-tagline">Zacznij przygodę</div>
     </div>
   </div>
 
   <!-- FILTER CHIPS -->
   <div class="attr-filters">
     <button class="filter-chip active" onclick="filterCards('all',this)">Wszystkie</button>
-    <button class="filter-chip" onclick="filterCards('szczyt',this)">⛰️ Szczyty</button>
-    <button class="filter-chip" onclick="filterCards('zamek',this)">🏰 Zamki</button>
-    <button class="filter-chip" onclick="filterCards('rzeka',this)">🌊 Rzeka</button>
-    <button class="filter-chip" onclick="filterCards('ar',this)">📡 AR</button>
+    <button class="filter-chip" onclick="filterCards('szczyt',this)">Szczyty</button>
+    <button class="filter-chip" onclick="filterCards('zamek',this)">Zamki</button>
+    <button class="filter-chip" onclick="filterCards('rzeka',this)">Rzeka</button>
+    <button class="filter-chip" onclick="filterCards('ar',this)">AR</button>
+    <button class="filter-chip" onclick="filterCards('kroscienk',this)">Krościenko n/D</button>
+    <button class="filter-chip" onclick="filterCards('szczawnica',this)">Szczawnica</button>
   </div>
 
   <!-- CARDS GRID -->
@@ -728,6 +738,28 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-eve
         <div class="card-tag">🌊 Rzeka</div>
         <div class="card-name">Przełom Dunajca</div>
         <div class="card-detail">Spływ tratwami · 18 km</div>
+      </div>
+    </div>
+
+    <!-- Krościenko n/D -->
+    <div class="attr-card" data-cat="kroscienk" onclick="openDetail('kroscienk')">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=500&q=80" alt="Krościenko" onerror="this.style.display='none'">
+      <div class="card-overlay"></div>
+      <div class="card-body">
+        <div class="card-tag">🏘️ Miasto</div>
+        <div class="card-name">Krościenko n/D</div>
+        <div class="card-detail">Brama w Pieniny</div>
+      </div>
+    </div>
+
+    <!-- Szczawnica -->
+    <div class="attr-card" data-cat="szczawnica" onclick="openDetail('szczawnica')">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80" alt="Szczawnica" onerror="this.style.display='none'">
+      <div class="card-overlay"></div>
+      <div class="card-body">
+        <div class="card-tag">💧 Uzdrowisko</div>
+        <div class="card-name">Szczawnica</div>
+        <div class="card-detail">Uzdrowisko · Dunajec</div>
       </div>
     </div>
 
@@ -854,6 +886,28 @@ const ATTRACTIONS = {
       { val: "⭐⭐⭐⭐⭐", key: "widoki" }
     ],
     desc: "Najwyższy szczyt całych Pienin. Skalne wieże Wysokich Skałek oferują imponującą panoramę. Trasa dłuższa, ale wyjątkowo nagradzająca.",
+  },
+  kroscienk: {
+    name: "Krościenko n/D",
+    subtitle: "Brama w Pieniny",
+    lat: 49.4367, lon: 20.4233, alt: 430,
+    stats: [
+      { val: "430 m", key: "wysokość" },
+      { val: "Dunajec", key: "rzeka" },
+      { val: "⭐⭐⭐⭐", key: "atrakcja" }
+    ],
+    desc: "Malownicze miasteczko u wejścia do Pienińskiego Parku Narodowego. Punkt startowy szlaków i spływów tratwami Dunajcem.",
+  },
+  szczawnica: {
+    name: "Szczawnica",
+    subtitle: "Uzdrowisko nad Dunajcem",
+    lat: 49.4264, lon: 20.4849, alt: 440,
+    stats: [
+      { val: "440 m", key: "wysokość" },
+      { val: "Zdrój", key: "typ" },
+      { val: "⭐⭐⭐⭐", key: "atrakcja" }
+    ],
+    desc: "Urokliwe uzdrowisko z leczniczymi źródłami mineralnymi. Meta spływu tratwami i baza wypadowa w Pieniny Spiskie.",
   },
   przelom: {
     name: "Przełom Dunajca",
