@@ -453,6 +453,17 @@ html, body {
 body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 256px; }
 
 
+
+.land-app-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
 </style>
 </head>
 <body>
@@ -497,7 +508,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-eve
               <polyline points="9,12 11,14 15,10"/>
             </svg>
           </div>
-          <span class="land-icon-label">Bezpiecznie</span>
+          <span class="land-icon-label">SOS</span>
         </button>
         <button class="land-icon-item" onclick="goTo('page-attractions')">
           <div class="land-icon-circle">
@@ -509,6 +520,8 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-eve
           <span class="land-icon-label">Przygoda</span>
         </button>
       </div>
+
+      <div class="land-app-subtitle">Aplikacja turystyczna AR</div>
 
     </div><!-- /landing-buttons -->
   </div><!-- /landing-inner -->
