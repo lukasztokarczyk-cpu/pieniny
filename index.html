@@ -272,58 +272,62 @@ html, body {
 /* ============================================================
    PAGE 2: ATTRACTIONS GRID
 ============================================================ */
+/* ============================================================
+   PAGE 2: ATTRACTIONS — REDESIGNED
+============================================================ */
 #page-attractions {
-  background: linear-gradient(180deg, #0a1a10 0%, #0f2219 40%, #0a1a10 100%);
+  background: #0a1208;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-.attr-header {
-  padding: 14px 20px 10px;
+/* Hero header */
+.attr-hero {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: linear-gradient(180deg, rgba(10,26,16,0.98) 0%, transparent 100%);
-  position: relative;
-  z-index: 10;
-  border-bottom: 1px solid rgba(201,168,76,0.15);
+  padding: 16px 18px 12px;
+  background: linear-gradient(180deg, #0d1a0f 0%, rgba(10,18,8,0) 100%);
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
 }
 
-.back-btn {
-  width: 38px; height: 38px;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  color: var(--cream);
-  font-size: 1.1rem;
-  cursor: pointer;
+.attr-back-btn {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.8);
   display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
   flex-shrink: 0;
   transition: background 0.2s;
 }
-.back-btn:active { background: rgba(255,255,255,0.12); }
+.attr-back-btn:active { background: rgba(255,255,255,0.12); }
 
-.attr-header-text { flex: 1; }
-.attr-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.35rem;
-  font-style: italic;
-  color: var(--cream);
-  line-height: 1.1;
-}
-.attr-subtitle {
-  font-size: 0.68rem;
+.attr-hero-text { flex: 1; }
+.attr-hero-eyebrow {
+  font-size: 0.65rem;
   color: var(--gold);
   letter-spacing: 3px;
   text-transform: uppercase;
-  margin-top: 2px;
+  font-family: 'Crimson Pro', serif;
+  margin-bottom: 2px;
+}
+.attr-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1;
 }
 
+/* Filter chips */
 .attr-filters {
   display: flex;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 10px 16px;
   overflow-x: auto;
   scrollbar-width: none;
   flex-shrink: 0;
@@ -331,86 +335,170 @@ html, body {
 .attr-filters::-webkit-scrollbar { display: none; }
 
 .filter-chip {
-  padding: 6px 16px;
+  padding: 7px 16px;
   border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: transparent;
-  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.5);
   font-family: 'Crimson Pro', serif;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s;
   flex-shrink: 0;
 }
-.filter-chip.active, .filter-chip:active {
-  background: var(--pine);
+.filter-chip.active {
+  background: linear-gradient(135deg, #1e5a30, #2d7a45);
   border-color: var(--gold);
   color: var(--cream);
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(30,90,48,0.4);
 }
 
+/* Grid */
 .attr-grid {
   flex: 1;
   overflow-y: auto;
-  padding: 6px 14px 20px;
+  padding: 10px 12px 24px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(201,168,76,0.3) transparent;
+  scrollbar-color: rgba(201,168,76,0.2) transparent;
 }
 
+/* Cards */
 .attr-card {
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
   position: relative;
-  aspect-ratio: 0.8;
-  background: var(--forest);
+  aspect-ratio: 3/4;
+  background: #0f1e12;
   border: 1px solid rgba(255,255,255,0.06);
-  transition: transform 0.2s, box-shadow 0.2s;
-  animation: cardIn 0.5s ease both;
+  transition: transform 0.18s, box-shadow 0.18s;
+  animation: cardIn 0.45s ease both;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
 }
-.attr-card:nth-child(1){animation-delay:0.05s}
-.attr-card:nth-child(2){animation-delay:0.10s}
-.attr-card:nth-child(3){animation-delay:0.15s}
-.attr-card:nth-child(4){animation-delay:0.20s}
-.attr-card:nth-child(5){animation-delay:0.25s}
-.attr-card:nth-child(6){animation-delay:0.30s}
-.attr-card:nth-child(7){animation-delay:0.35s}
+.attr-card-wide {
+  grid-column: 1 / -1;
+  aspect-ratio: 16/7;
+}
+.attr-card:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.attr-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
+
+.attr-card:nth-child(1){animation-delay:0.04s}
+.attr-card:nth-child(2){animation-delay:0.08s}
+.attr-card:nth-child(3){animation-delay:0.12s}
+.attr-card:nth-child(4){animation-delay:0.16s}
+.attr-card:nth-child(5){animation-delay:0.20s}
+.attr-card:nth-child(6){animation-delay:0.24s}
+.attr-card:nth-child(7){animation-delay:0.28s}
 
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-.attr-card:active { transform: scale(0.97); }
 
-.card-scene { position: absolute; inset: 0; z-index: 0; }
-.scene-trzykorony { background: linear-gradient(180deg, #2a6fa8 0%, #5aa0cc 35%, #87ceeb 55%, #2d5a3d 55%, #1a3020 100%); }
-.scene-trzykorony::before { content: ''; position: absolute; bottom: 35%; left: 50%; transform: translateX(-50%); width: 70%; height: 55%; clip-path: polygon(50% 0%,75% 45%,100% 80%,0% 80%,25% 45%); background: linear-gradient(180deg, #c8b89a 0%, #6a5535 100%); }
-.scene-sokolica { background: linear-gradient(180deg, #1e5c8a 0%, #3a8fbf 40%, #c8d8e8 50%, #2d5a3d 50%, #1a3020 100%); }
-.scene-sokolica::before { content: ''; position: absolute; bottom: 38%; right: 15%; width: 45%; height: 50%; clip-path: polygon(50% 0%,100% 70%,100% 100%,0% 100%,0% 70%); background: linear-gradient(180deg, #b0a090 0%, #6a5535 100%); }
-.scene-czorsztyn { background: linear-gradient(180deg, #1a4a6a 0%, #2a7aaa 30%, #8accd8 55%, #4a3520 55%, #2a1a08 100%); }
-.scene-czorsztyn::before { content: ''; position: absolute; bottom: 38%; left: 20%; width: 60%; height: 52%; clip-path: polygon(10% 100%,10% 50%,20% 50%,20% 30%,30% 30%,30% 15%,50% 15%,50% 30%,60% 30%,60% 50%,70% 50%,70% 100%); background: linear-gradient(180deg, #9a8060 0%, #5a4030 100%); }
-.scene-niedzica { background: linear-gradient(180deg, #2a5a7a 0%, #4a9aba 35%, #a8d4e0 55%, #3a4a20 55%, #1a2a10 100%); }
-.scene-niedzica::before { content: ''; position: absolute; bottom: 35%; left: 15%; width: 70%; height: 55%; clip-path: polygon(15% 100%,15% 45%,25% 45%,25% 20%,40% 20%,40% 35%,55% 35%,55% 20%,70% 20%,70% 45%,85% 45%,85% 100%); background: linear-gradient(180deg, #b09870 0%, #6a4828 100%); }
-.scene-wysoka { background: linear-gradient(180deg, #1e3a5a 0%, #2a5a8a 30%, #7ab8d8 52%, #1a3a2a 52%, #0a1a10 100%); }
-.scene-wysoka::before { content: ''; position: absolute; bottom: 33%; left: 50%; transform: translateX(-50%); width: 80%; height: 58%; clip-path: polygon(50% 0%,70% 35%,100% 80%,0% 80%,30% 35%); background: linear-gradient(180deg, #d8c8a8 0%, #8a6845 100%); }
-.scene-przelom { background: linear-gradient(180deg, #1a3a6a 0%, #2a6aaa 35%, #8abde0 52%, #1e5a3a 52%, #0a2015 100%); }
-.scene-przelom::after { content: ''; position: absolute; bottom: 15%; left: 20%; right: 20%; height: 40%; background: rgba(30,107,138,0.7); clip-path: polygon(0% 60%,10% 40%,25% 55%,40% 30%,55% 50%,70% 25%,85% 45%,100% 35%,100% 100%,0% 100%); }
-.scene-ar { background: linear-gradient(135deg, #0a1a10 0%, #1a3a2a 50%, #0d2a1a 100%); }
-.scene-ar::before { content: ''; position: absolute; inset: 15%; border: 2px solid rgba(42,157,143,0.4); border-radius: 12px; }
-.scene-ar::after { content: '◈'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(42,157,143,0.5); }
+/* Photo */
+.card-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform 0.4s ease;
+}
+.attr-card:hover .card-photo { transform: scale(1.04); }
 
-.card-scene::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(180deg, transparent 0%, rgba(10,25,15,0.8) 60%, rgba(5,12,8,0.95) 100%); }
+/* AR card fallback bg */
+.card-ar-scene-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 40% 40%, #0d3a2a 0%, #051510 100%);
+  z-index: 0;
+}
+.card-ar-scene-bg::before {
+  content: '◈';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: rgba(42,157,143,0.25);
+  z-index: 1;
+}
 
-.card-overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, transparent 30%, rgba(8,20,12,0.5) 60%, rgba(5,15,10,0.92) 100%); }
-.card-body { position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 10px 12px 12px; }
-.card-tag { display: inline-block; padding: 2px 8px; background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.4); border-radius: 20px; font-size: 0.58rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
-.card-name { font-family: 'Playfair Display', serif; font-size: clamp(0.9rem, 3.5vw, 1.1rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 2px; }
-.card-detail { font-size: 0.68rem; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
-.card-ar-badge { position: absolute; top: 10px; right: 10px; z-index: 4; width: 30px; height: 30px; border-radius: 50%; background: rgba(42,157,143,0.85); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; backdrop-filter: blur(4px); }
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.0) 0%,
+    rgba(0,0,0,0.0) 40%,
+    rgba(5,15,8,0.6) 70%,
+    rgba(3,10,5,0.95) 100%
+  );
+}
+
+.card-body {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 3;
+  padding: 10px 14px 14px;
+}
+
+.card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  background: rgba(201,168,76,0.18);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 20px;
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 600;
+}
+
+.card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.95rem, 3.5vw, 1.15rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 3px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+
+.card-detail {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.3px;
+  font-family: 'Crimson Pro', serif;
+}
+
+.card-ar-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  z-index: 4;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: rgba(42,157,143,0.85);
+  border: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+  backdrop-filter: blur(6px);
+  font-family: 'Crimson Pro', serif;
+}
 
 /* ============================================================
    PAGE 3: DETAIL / AR VIEW
@@ -549,104 +637,108 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-eve
 <!-- ===================== PAGE 2: ATTRACTIONS ===================== -->
 <div class="page slide-right" id="page-attractions">
 
-  <div class="attr-header">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="attr-header-text">
-      <div class="attr-title">Pieniny Explorer</div>
-      <div class="attr-subtitle">Wybierz atrakcję</div>
+  <!-- HERO HEADER -->
+  <div class="attr-hero">
+    <button class="attr-back-btn" onclick="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <div class="attr-hero-text">
+      <div class="attr-hero-eyebrow">🏔️ Pieniny Explorer</div>
+      <div class="attr-hero-title">Wybierz atrakcję</div>
     </div>
-    <span style="font-size:1.5rem">🏔️</span>
   </div>
 
+  <!-- FILTER CHIPS -->
   <div class="attr-filters">
     <button class="filter-chip active" onclick="filterCards('all',this)">Wszystkie</button>
-    <button class="filter-chip" onclick="filterCards('szczyt',this)">Szczyty</button>
-    <button class="filter-chip" onclick="filterCards('zamek',this)">Zamki</button>
-    <button class="filter-chip" onclick="filterCards('rzeka',this)">Rzeka</button>
-    <button class="filter-chip" onclick="filterCards('ar',this)">Widok AR</button>
+    <button class="filter-chip" onclick="filterCards('szczyt',this)">⛰️ Szczyty</button>
+    <button class="filter-chip" onclick="filterCards('zamek',this)">🏰 Zamki</button>
+    <button class="filter-chip" onclick="filterCards('rzeka',this)">🌊 Rzeka</button>
+    <button class="filter-chip" onclick="filterCards('ar',this)">📡 AR</button>
   </div>
 
+  <!-- CARDS GRID -->
   <div class="attr-grid" id="attr-grid">
 
-    <!-- Card: Trzy Korony -->
-    <div class="attr-card" data-cat="szczyt ar" onclick="openDetail('trzykorony')">
-      <div class="card-scene scene-trzykorony"></div>
+    <!-- Trzy Korony — WIDE card (full width) -->
+    <div class="attr-card attr-card-wide" data-cat="szczyt ar" onclick="openDetail('trzykorony')">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="Trzy Korony" onerror="this.style.display='none'">
       <div class="card-overlay"></div>
       <div class="card-ar-badge">AR</div>
       <div class="card-body">
-        <div class="card-tag">Szczyt</div>
+        <div class="card-tag">⛰️ Szczyt</div>
         <div class="card-name">Trzy Korony</div>
-        <div class="card-detail">982 m n.p.m.</div>
+        <div class="card-detail">982 m n.p.m. · Korona Gór Polskich</div>
       </div>
     </div>
 
-    <!-- Card: Sokolica -->
+    <!-- Sokolica -->
     <div class="attr-card" data-cat="szczyt ar" onclick="openDetail('sokolica')">
-      <div class="card-scene scene-sokolica"></div>
+      <img class="card-photo" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&q=80" alt="Sokolica" onerror="this.style.display='none'">
       <div class="card-overlay"></div>
       <div class="card-ar-badge">AR</div>
       <div class="card-body">
-        <div class="card-tag">Szczyt</div>
+        <div class="card-tag">⛰️ Szczyt</div>
         <div class="card-name">Sokolica</div>
         <div class="card-detail">747 m n.p.m.</div>
       </div>
     </div>
 
-    <!-- Card: Zamek Czorsztyn -->
-    <div class="attr-card" data-cat="zamek ar" onclick="openDetail('czorsztyn')">
-      <div class="card-scene scene-czorsztyn"></div>
-      <div class="card-overlay"></div>
-      <div class="card-ar-badge">AR</div>
-      <div class="card-body">
-        <div class="card-tag">Zamek</div>
-        <div class="card-name">Zamek Czorsztyn</div>
-        <div class="card-detail">570 m n.p.m. · XIV w.</div>
-      </div>
-    </div>
-
-    <!-- Card: Zamek Niedzica -->
-    <div class="attr-card" data-cat="zamek ar" onclick="openDetail('niedzica')">
-      <div class="card-scene scene-niedzica"></div>
-      <div class="card-overlay"></div>
-      <div class="card-ar-badge">AR</div>
-      <div class="card-body">
-        <div class="card-tag">Zamek</div>
-        <div class="card-name">Zamek Niedzica</div>
-        <div class="card-detail">590 m n.p.m. · XIV w.</div>
-      </div>
-    </div>
-
-    <!-- Card: Wysoka -->
+    <!-- Wysoka -->
     <div class="attr-card" data-cat="szczyt ar" onclick="openDetail('wysoka')">
-      <div class="card-scene scene-wysoka"></div>
+      <img class="card-photo" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=500&q=80" alt="Wysoka" onerror="this.style.display='none'">
       <div class="card-overlay"></div>
       <div class="card-ar-badge">AR</div>
       <div class="card-body">
-        <div class="card-tag">Szczyt</div>
+        <div class="card-tag">⛰️ Szczyt</div>
         <div class="card-name">Wysoka</div>
         <div class="card-detail">1050 m n.p.m.</div>
       </div>
     </div>
 
-    <!-- Card: Przełom Dunajca -->
+    <!-- Zamek Czorsztyn — WIDE -->
+    <div class="attr-card attr-card-wide" data-cat="zamek ar" onclick="openDetail('czorsztyn')">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Zamek Czorsztyn" onerror="this.style.display='none'">
+      <div class="card-overlay"></div>
+      <div class="card-ar-badge">AR</div>
+      <div class="card-body">
+        <div class="card-tag">🏰 Zamek</div>
+        <div class="card-name">Zamek Czorsztyn</div>
+        <div class="card-detail">Ruiny · XIV wiek · Jezioro Czorsztyńskie</div>
+      </div>
+    </div>
+
+    <!-- Zamek Niedzica -->
+    <div class="attr-card" data-cat="zamek ar" onclick="openDetail('niedzica')">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=500&q=80" alt="Zamek Niedzica" onerror="this.style.display='none'">
+      <div class="card-overlay"></div>
+      <div class="card-ar-badge">AR</div>
+      <div class="card-body">
+        <div class="card-tag">🏰 Zamek</div>
+        <div class="card-name">Zamek Niedzica</div>
+        <div class="card-detail">590 m · XIV w.</div>
+      </div>
+    </div>
+
+    <!-- Przełom Dunajca -->
     <div class="attr-card" data-cat="rzeka" onclick="openDetail('przelom')">
-      <div class="card-scene scene-przelom"></div>
+      <img class="card-photo" src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?w=500&q=80" alt="Przełom Dunajca" onerror="this.style.display='none'">
       <div class="card-overlay"></div>
       <div class="card-body">
-        <div class="card-tag">Rzeka</div>
+        <div class="card-tag">🌊 Rzeka</div>
         <div class="card-name">Przełom Dunajca</div>
         <div class="card-detail">Spływ tratwami · 18 km</div>
       </div>
     </div>
 
-    <!-- Card: AR Guide -->
-    <div class="attr-card" data-cat="ar" onclick="openDetail('arguide')" style="border-color:rgba(42,157,143,0.3)">
-      <div class="card-scene scene-ar"></div>
+    <!-- AR Radar -->
+    <div class="attr-card attr-card-wide" data-cat="ar" onclick="openDetail('arguide')" style="border-color:rgba(42,157,143,0.4)">
+      <div class="card-ar-scene-bg"></div>
       <div class="card-overlay"></div>
-      <div class="card-body">
-        <div class="card-tag" style="color:#2a9d8f;border-color:rgba(42,157,143,0.4);background:rgba(42,157,143,0.15)">AR Radar</div>
+      <div class="card-body" style="text-align:center; padding-bottom:20px">
+        <div class="card-tag" style="color:#2a9d8f;border-color:rgba(42,157,143,0.5);background:rgba(42,157,143,0.15)">📡 AR Radar</div>
         <div class="card-name">AR Radar 360°</div>
-        <div class="card-detail">Wszystkie szczyty w AR</div>
+        <div class="card-detail">Wszystkie szczyty jednocześnie</div>
       </div>
     </div>
 
